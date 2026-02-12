@@ -10,6 +10,7 @@ use App\Http\Controllers\AnggotaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PeminjamController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,7 +37,7 @@ Route::get('/redirect-dashboard', function () {
 // =====================
 // PROFILE
 // =====================
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -69,11 +70,28 @@ Route::middleware(['auth','role:admin'])->group(function(){
 // =====================
 // ROUTE RESOURCES
 // =====================
+
+Route::middleware(['auth', 'role:admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::resource('users', UserController::class);
+    });
+
 Route::middleware(['auth'])->group(function () {
-    Route::resource('buku', BukuController::class);
-    Route::resource('peminjaman', PeminjamanController::class);
-    Route::resource('pengembalian', PengembalianController::class);
-    Route::resource('anggota', AnggotaController::class);
+
+    Route::get('/profile-siswa', [App\Http\Controllers\ProfileSiswaController::class, 'index'])
+        ->name('peminjam.profile.siswa');
+
+    Route::put('/profile-siswa', [App\Http\Controllers\ProfileSiswaController::class, 'update'])
+        ->name('peminjam.profile.siswa.update');
+});
+
+Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
+
+    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::resource('books', \App\Http\Controllers\Admin\BookController::class);
+
 });
 
 require __DIR__.'/auth.php';

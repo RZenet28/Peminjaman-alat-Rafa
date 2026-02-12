@@ -32,7 +32,7 @@ class AuthenticatedSessionController extends Controller
     if ($role == 'admin') {
         return redirect('/admin');
     } elseif ($role == 'petugas') {
-        return redirect('/petugas');
+        return redirect('/petugas/dashboard');
     } else {
         return redirect('/peminjam/dashboard'); // peminjam
     }

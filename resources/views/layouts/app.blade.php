@@ -335,14 +335,21 @@
             <li class="sidebar-section">Manajemen</li>
 
             <li class="sidebar-menu-item">
-                <a href="/admin/buku" class="sidebar-menu-link">
+                <a href="{{ route('admin.books.index') }}" class="sidebar-menu-link">
                     <i class="bi bi-book sidebar-menu-icon"></i>
                     Data Buku
                 </a>
             </li>
 
             <li class="sidebar-menu-item">
-                <a href="/admin/user" class="sidebar-menu-link">
+                <a href="{{ route('admin.categories.index') }}" class="sidebar-menu-link">
+                    <i class="bi bi-tags sidebar-menu-icon"></i>
+                    Kategori Buku
+                </a>
+            </li>
+
+            <li class="sidebar-menu-item">
+                <a href="{{ route('admin.users.index') }}" class="sidebar-menu-link">
                     <i class="bi bi-people sidebar-menu-icon"></i>
                     User
                 </a>

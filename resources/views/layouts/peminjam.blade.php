@@ -352,7 +352,7 @@
             <li class="sidebar-section">Akun</li>
             
             <li class="sidebar-menu-item">
-                <a href="/profile" class="sidebar-menu-link {{ request()->is('profile') ? 'active' : '' }}">
+                <a href="{{ route('peminjam.profile.siswa') }}" class="sidebar-menu-link {{ request()->is('peminjam/profile-siswa') ? 'active' : '' }}">
                     <i class="bi bi-person-circle sidebar-menu-icon"></i>
                     Profil Saya
                 </a>
