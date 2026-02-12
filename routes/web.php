@@ -9,6 +9,7 @@ use App\Http\Controllers\PengembalianController;
 use App\Http\Controllers\AnggotaController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\PeminjamController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -52,9 +53,9 @@ Route::middleware(['auth','role:petugas'])->prefix('petugas')->name('petugas.')-
     Route::get('/dashboard', [PetugasController::class, 'dashboard'])->name('dashboard');
 });
 
-Route::middleware(['auth','role:peminjam'])->get('/peminjam', function(){
-    return view('peminjam.dashboard');
-})->name('anggota.dashboard');
+Route::middleware(['auth','role:peminjam'])->prefix('peminjam')->name('peminjam.')->group(function () {
+    Route::get('/dashboard', [PeminjamController::class, 'dashboard'])->name('peminjam.dashboard');
+});
 
 // =====================
 // ADMIN - TOOLS

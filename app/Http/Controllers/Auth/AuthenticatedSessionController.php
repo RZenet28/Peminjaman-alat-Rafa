@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
     } elseif ($role == 'petugas') {
         return redirect('/petugas');
     } else {
-        return redirect('/dashboard'); // peminjam
+        return redirect('/peminjam/dashboard'); // peminjam
     }
 }
 

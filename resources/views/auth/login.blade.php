@@ -146,7 +146,7 @@
                         <div class="text-center mt-6">
                             <p class="text-sm text-gray-600">
                                 Belum punya akun? 
-                                <a href="#" class="text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200">
+                                <a href="{{ route('register') }}" class="text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200">
                                     Daftar disini
                                 </a>
                             </p>

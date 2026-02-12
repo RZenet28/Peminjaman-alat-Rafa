@@ -22,14 +22,14 @@
             overflow-x: hidden;
         }
 
-        /* Sidebar Styles - PETUGAS VERSION (Orange/Green Theme) */
+        /* Sidebar Styles - PEMINJAM VERSION */
         .sidebar {
             position: fixed;
             top: 0;
             left: 0;
             height: 100vh;
             width: 260px;
-            background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
             padding: 0;
             box-shadow: 4px 0 10px rgba(0,0,0,0.1);
             z-index: 1000;
@@ -294,11 +294,11 @@
 </head>
 <body>
 
-    <!-- Sidebar PETUGAS -->
+    <!-- Sidebar PEMINJAM -->
     <aside class="sidebar" id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <a href="/petugas/dashboard" class="sidebar-logo">
+            <a href="/peminjam/dashboard" class="sidebar-logo">
                 <div class="sidebar-logo-icon">
                     <i class="bi bi-book"></i>
                 </div>
@@ -306,53 +306,46 @@
             </a>
         </div>
 
-        <!-- Sidebar Menu PETUGAS -->
+        <!-- Sidebar Menu PEMINJAM -->
         <ul class="sidebar-menu">
             <li class="sidebar-section">Menu Utama</li>
             
             <li class="sidebar-menu-item">
-                <a href="/petugas/dashboard" class="sidebar-menu-link {{ request()->is('petugas/dashboard') ? 'active' : '' }}">
+                <a href="/peminjam/dashboard" class="sidebar-menu-link {{ request()->is('peminjam/dashboard') ? 'active' : '' }}">
                     <i class="bi bi-speedometer2 sidebar-menu-icon"></i>
                     Dashboard
                 </a>
             </li>
 
-            <li class="sidebar-section">Tugas Petugas</li>
+            <li class="sidebar-section">Peminjaman</li>
             
             <li class="sidebar-menu-item">
-                <a href="/petugas/persetujuan-peminjaman" class="sidebar-menu-link {{ request()->is('petugas/persetujuan-peminjaman') ? 'active' : '' }}">
-                    <i class="bi bi-clipboard-check sidebar-menu-icon"></i>
-                    Menyetujui Peminjaman
+                <a href="/peminjam/daftar-buku" class="sidebar-menu-link {{ request()->is('peminjam/daftar-buku') ? 'active' : '' }}">
+                    <i class="bi bi-book sidebar-menu-icon"></i>
+                    Daftar Buku
                 </a>
             </li>
             
             <li class="sidebar-menu-item">
-                <a href="/petugas/pantau-pengembalian" class="sidebar-menu-link {{ request()->is('petugas/pantau-pengembalian') ? 'active' : '' }}">
-                    <i class="bi bi-eye sidebar-menu-icon"></i>
-                    Memantau Pengembalian
+                <a href="/peminjam/ajukan-peminjaman" class="sidebar-menu-link {{ request()->is('peminjam/ajukan-peminjaman') ? 'active' : '' }}">
+                    <i class="bi bi-plus-circle sidebar-menu-icon"></i>
+                    Ajukan Peminjaman
                 </a>
             </li>
             
             <li class="sidebar-menu-item">
-                <a href="/petugas/cetak-laporan" class="sidebar-menu-link {{ request()->is('petugas/cetak-laporan') ? 'active' : '' }}">
-                    <i class="bi bi-printer sidebar-menu-icon"></i>
-                    Mencetak Laporan
+                <a href="/peminjam/kembalikan-buku" class="sidebar-menu-link {{ request()->is('peminjam/kembalikan-buku') ? 'active' : '' }}">
+                    <i class="bi bi-arrow-return-left sidebar-menu-icon"></i>
+                    Kembalikan Buku
                 </a>
             </li>
 
-            <li class="sidebar-section">Data</li>
+            <li class="sidebar-section">Riwayat</li>
             
             <li class="sidebar-menu-item">
-                <a href="/petugas/data-buku" class="sidebar-menu-link {{ request()->is('petugas/data-buku') ? 'active' : '' }}">
-                    <i class="bi bi-book-half sidebar-menu-icon"></i>
-                    Data Buku
-                </a>
-            </li>
-            
-            <li class="sidebar-menu-item">
-                <a href="/petugas/data-peminjam" class="sidebar-menu-link {{ request()->is('petugas/data-peminjam') ? 'active' : '' }}">
-                    <i class="bi bi-people sidebar-menu-icon"></i>
-                    Data Peminjam
+                <a href="/peminjam/riwayat" class="sidebar-menu-link {{ request()->is('peminjam/riwayat') ? 'active' : '' }}">
+                    <i class="bi bi-clock-history sidebar-menu-icon"></i>
+                    Riwayat Peminjaman
                 </a>
             </li>
 
@@ -374,7 +367,7 @@
                 </div>
                 <div class="user-details">
                     <p class="user-name">{{ Auth::user()->name }}</p>
-                    <p class="user-role">Petugas Perpustakaan</p>
+                    <p class="user-role">{{ Auth::user()->kelas ?? 'Peminjam' }}</p>
                 </div>
             </div>
         </div>
@@ -391,7 +384,7 @@
                 <button class="menu-toggle" id="menuToggle">
                     <i class="bi bi-list"></i>
                 </button>
-                <h5 class="mb-0 fw-bold text-dark">{{ Auth::user()->name }} (Petugas)</h5>
+                <h5 class="mb-0 fw-bold text-dark">{{ Auth::user()->name }} ({{ Auth::user()->kelas ?? 'Peminjam' }})</h5>
             </div>
             <div class="top-nav-right">
                 <form action="{{ route('logout') }}" method="POST" class="d-inline">

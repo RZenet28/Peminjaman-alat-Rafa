@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard') - BookHub Sekolah</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    
+
     <style>
         * {
             margin: 0;
@@ -31,15 +32,15 @@
             width: 260px;
             background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
             padding: 0;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
             transition: all 0.3s ease;
         }
 
         .sidebar-header {
             padding: 24px 20px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
         }
 
         .sidebar-logo {
@@ -102,7 +103,7 @@
         }
 
         .sidebar-menu-link:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
             transform: translateX(4px);
         }
@@ -138,8 +139,8 @@
             left: 0;
             right: 0;
             padding: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .user-info {
@@ -147,7 +148,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             color: white;
         }
@@ -201,7 +202,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             position: sticky;
             top: 0;
             z-index: 999;
@@ -278,7 +279,7 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0,0,0,0.5);
+                background: rgba(0, 0, 0, 0.5);
                 z-index: 999;
             }
 
@@ -293,24 +294,26 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
 
-        .content-area > * {
+        .content-area>* {
             animation: slideIn 0.4s ease-out;
         }
     </style>
 </head>
+
 <body>
 
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <a href="#" class="sidebar-logo">
+            <a href="{{ route('admin.dashboard') }}" class="sidebar-logo">
                 <div class="sidebar-logo-icon">
                     <i class="bi bi-book"></i>
                 </div>
@@ -321,7 +324,7 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <li class="sidebar-section">Sistem</li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin" class="sidebar-menu-link active">
                     <i class="bi bi-speedometer2 sidebar-menu-icon"></i>
@@ -330,21 +333,21 @@
             </li>
 
             <li class="sidebar-section">Manajemen</li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/buku" class="sidebar-menu-link">
                     <i class="bi bi-book sidebar-menu-icon"></i>
                     Data Buku
                 </a>
             </li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/user" class="sidebar-menu-link">
                     <i class="bi bi-people sidebar-menu-icon"></i>
                     User
                 </a>
             </li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/peminjaman" class="sidebar-menu-link">
                     <i class="bi bi-journal-text sidebar-menu-icon"></i>
@@ -353,14 +356,14 @@
             </li>
 
             <li class="sidebar-section">Laporan</li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/laporan" class="sidebar-menu-link">
                     <i class="bi bi-bar-chart sidebar-menu-icon"></i>
                     Laporan
                 </a>
             </li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/riwayat" class="sidebar-menu-link">
                     <i class="bi bi-clock-history sidebar-menu-icon"></i>
@@ -369,7 +372,7 @@
             </li>
 
             <li class="sidebar-section">Pengaturan</li>
-            
+
             <li class="sidebar-menu-item">
                 <a href="/admin/settings" class="sidebar-menu-link">
                     <i class="bi bi-gear sidebar-menu-icon"></i>
@@ -424,7 +427,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom JS -->
     <script>
         // Mobile Menu Toggle
@@ -432,12 +435,12 @@
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('overlay');
 
-        menuToggle.addEventListener('click', function() {
+        menuToggle.addEventListener('click', function () {
             sidebar.classList.toggle('active');
             overlay.classList.toggle('active');
         });
 
-        overlay.addEventListener('click', function() {
+        overlay.addEventListener('click', function () {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
         });
@@ -445,7 +448,7 @@
         // Active Menu Item
         const currentPath = window.location.pathname;
         const menuLinks = document.querySelectorAll('.sidebar-menu-link');
-        
+
         menuLinks.forEach(link => {
             if (link.getAttribute('href') === currentPath) {
                 link.classList.add('active');
@@ -457,4 +460,5 @@
 
     @stack('scripts')
 </body>
+
 </html>
