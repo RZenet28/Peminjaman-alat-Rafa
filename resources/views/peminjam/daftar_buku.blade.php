@@ -86,38 +86,6 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
         }
 
-        .toast-notification {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: white;
-            border-radius: 12px;
-            padding: 16px 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            z-index: 999;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .toast-notification.success {
-            border-left: 4px solid #10b981;
-        }
-
-        .toast-notification.error {
-            border-left: 4px solid #ef4444;
-        }
-
         /* Quantity Modal Styles */
         .quantity-modal {
             display: none;
@@ -332,7 +300,7 @@
         <div class="quantity-modal-content">
             <div class="quantity-modal-title" id="modalTitle">Buku</div>
             <div class="quantity-modal-subtitle" id="modalSubtitle">Berapa banyak buku yang ingin Anda pinjam?</div>
-            
+
             <form id="quantityForm">
                 <div class="quantity-form-group">
                     <label class="quantity-label">Jumlah Peminjaman</label>
@@ -344,7 +312,7 @@
                     <div class="qty-max-info" id="maxStockLabel">Stok Tersedia: 0</div>
                     <div class="qty-max-info" id="qtyInfo">Sisa stok: 0</div>
                 </div>
-                
+
                 <div class="modal-actions">
                     <button type="submit" class="btn-modal-confirm" id="confirmBtn">
                         <i class="bi bi-check-circle me-2"></i>Tambahkan
@@ -390,17 +358,8 @@
                 qtyInput.max = maxStock;
                 qtyInput.min = 1;
 
-                maxStockLabel.textContent = `Stok Tersedia: $ {
-                                maxStock
-                            }
-
-                            `;
-
-                modalTitle.textContent = `$ {
-                                bookTitle
-                            }
-
-                            `;
+                maxStockLabel.textContent = `Stok Tersedia: ${maxStock}`;
+                modalTitle.textContent = `${bookTitle}`;
                 modalSubtitle.textContent = 'Berapa banyak buku yang ingin Anda pinjam?';
                 updateQtyInfo();
 
@@ -478,11 +437,7 @@
                 if (data.success) {
 
                     // Show success message
-                    showToast(`✓ $ {
-                                quantity
-                            }
-
-                            × buku ditambahkan ke keranjang`, 'success');
+                    showToast(`✓ ${quantity} × buku ditambahkan ke keranjang`, 'success');
 
                     // Update cart badge in top nav
                     updateCartBadgeFromTop();
@@ -517,13 +472,8 @@
             const remaining = maxStock - qty;
 
             if (remaining > 0) {
-                qtyInfo.textContent = `Sisa stok: $ {
-                        remaining
-                    }
-
-                    `;
+                qtyInfo.textContent = `Sisa stok: ${remaining}`;
             }
-
             else if (remaining === 0) {
                 qtyInfo.textContent = 'Stok akan habis';
             }
@@ -540,43 +490,46 @@
             });
         }
 
-        // Show toast notification
+        // Show toast notification using SweetAlert2
         function showToast(message, type = 'success') {
-            const toast = document.createElement('div');
+            const iconMap = {
+                'success': 'success',
+                'error': 'error',
+                'warning': 'warning',
+                'info': 'info'
+            };
 
-            toast.className = `toast-notification $ {
-                    type
+            Swal.fire({
+                title: type === 'success' ? '✓ Berhasil!' : 'Perhatian',
+                text: message,
+                icon: iconMap[type] || 'info',
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
                 }
-
-                `;
-            toast.textContent = message;
-
-            document.body.appendChild(toast);
-
-            // Auto remove after 4 seconds
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }
-
-                , 4000);
+            });
         }
 
         // Add animation for sliding out
         const style = document.createElement('style');
 
         style.textContent = ` @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
+                        from {
+                            transform: translateX(0);
+                            opacity: 1;
+                        }
 
-                to {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-            }
+                        to {
+                            transform: translateX(400px);
+                            opacity: 0;
+                        }
+                    }
 
-            `;
+                    `;
         document.head.appendChild(style);
 </script>@endsection

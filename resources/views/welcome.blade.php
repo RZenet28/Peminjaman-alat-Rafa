@@ -1,422 +1,571 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name', 'Sistem Peminjaman Buku') }}</title>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700" rel="stylesheet" />
+    <title>{{ config('app.name', 'BookHub Sekolah') }}</title>
 
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=plus-jakarta-sans:400,500,600,700,800" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #F8FAFC;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --bg-body: #F1F5F9;
+            --card-bg: #FFFFFF;
+            --border-light: #E2E8F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-body);
+            /* Elemen mesh gradient background yang sangat halus */
+            background-image:
+                radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.08) 0px, transparent 50%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            color: var(--text-dark);
+        }
+
+        /* Header Nav Logo */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .header-logo svg {
+            width: 32px;
+            height: 32px;
+            color: var(--primary);
+        }
+
+        .header-logo span {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.03em;
+        }
+
+        /* Card Container */
+        .main-card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            padding: 1.5rem;
+            /* Inner padding untuk card style modern */
+            gap: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* --- Left Section --- */
+        .left-section {
+            flex: 1.2;
+            padding: 3rem 2rem 3rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            background: #EEF2FF;
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+            letter-spacing: 0.02em;
+        }
+
+        .left-section h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.25rem;
+        }
+
+        .left-section p.subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 90%;
+        }
+
+        /* Auth Buttons Layout */
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 2.25rem;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.39);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.23);
+        }
+
+        .btn-secondary {
+            background: var(--card-bg);
+            color: var(--text-dark);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-body);
+            border-color: #CBD5E1;
+        }
+
+        /* Features Grid */
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background: #EEF2FF;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--primary);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover .feature-icon {
+            transform: scale(1.05);
+        }
+
+        .feature-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            fill: none;
+        }
+
+        .feature-content h3 {
+            font-size: 1.125rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+        }
+
+        .feature-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Stats Section */
+        .stats {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            letter-spacing: -0.02em;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* --- Right Section (Visual) --- */
+        .right-section {
+            flex: 1;
+            background-color: var(--primary);
+            background-image:
+                radial-gradient(at 0% 0%, #6366f1 0px, transparent 50%),
+                radial-gradient(at 100% 0%, #a855f7 0px, transparent 50%),
+                radial-gradient(at 100% 100%, #ec4899 0px, transparent 50%),
+                radial-gradient(at 0% 100%, #3b82f6 0px, transparent 50%);
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 2px 20px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Floating Glass Tags */
+        .glass-tag {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 0.75rem 1.25rem;
+            border-radius: 99px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: float 6s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .glass-tag svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .tag-1 {
+            top: 15%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .tag-2 {
+            bottom: 15%;
+            left: 10%;
+            animation-delay: -3s;
+        }
+
+        .book-illustration {
+            position: relative;
+            z-index: 1;
+            width: 320px;
+            height: 320px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
 
-            body {
-                font-family: 'Inter', sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 20px;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
             }
 
-            .container {
-                max-width: 1200px;
-                width: 100%;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
             }
 
-            .header {
-                text-align: center;
-                margin-bottom: 40px;
+            50% {
+                transform: translateY(-15px);
             }
+        }
 
-            .header h1 {
-                color: white;
-                font-size: 3rem;
-                font-weight: 700;
-                margin-bottom: 10px;
-                text-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            }
-
-            .header p {
-                color: rgba(255,255,255,0.9);
-                font-size: 1.1rem;
-            }
-
+        /* Responsive */
+        @media (max-width: 1024px) {
             .main-card {
-                background: white;
-                border-radius: 20px;
-                box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-                overflow: hidden;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0;
+                flex-direction: column;
+                padding: 1rem;
             }
 
             .left-section {
-                padding: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
+                padding: 2.5rem 1.5rem;
             }
 
-            .left-section h2 {
-                font-size: 2rem;
-                color: #2d3748;
-                margin-bottom: 20px;
-                font-weight: 700;
-            }
-
-            .left-section p {
-                color: #718096;
-                font-size: 1.1rem;
-                line-height: 1.8;
-                margin-bottom: 30px;
-            }
-
-            .features {
-                display: flex;
-                flex-direction: column;
-                gap: 20px;
-                margin-bottom: 40px;
-            }
-
-            .feature-item {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .feature-icon {
-                width: 50px;
-                height: 50px;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                border-radius: 12px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                flex-shrink: 0;
-            }
-
-            .feature-icon svg {
-                width: 24px;
-                height: 24px;
-                stroke: white;
-                fill: none;
-            }
-
-            .feature-content h3 {
-                font-size: 1.1rem;
-                color: #2d3748;
-                margin-bottom: 5px;
-                font-weight: 600;
-            }
-
-            .feature-content p {
-                font-size: 0.9rem;
-                color: #a0aec0;
-                margin: 0;
+            .left-section h1 {
+                font-size: 2.75rem;
             }
 
             .right-section {
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                padding: 60px;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .right-section::before {
-                content: '';
-                position: absolute;
-                width: 300px;
-                height: 300px;
-                background: rgba(255,255,255,0.1);
-                border-radius: 50%;
-                top: -100px;
-                right: -100px;
-            }
-
-            .right-section::after {
-                content: '';
-                position: absolute;
-                width: 200px;
-                height: 200px;
-                background: rgba(255,255,255,0.1);
-                border-radius: 50%;
-                bottom: -50px;
-                left: -50px;
-            }
-
-            .book-illustration {
-                position: relative;
-                z-index: 1;
-                margin-bottom: 40px;
-            }
-
-            .book-illustration svg {
-                width: 200px;
-                height: 200px;
-                filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
-            }
-
-            .auth-buttons {
-                display: flex;
-                gap: 15px;
-                position: relative;
-                z-index: 1;
-                width: 100%;
-                max-width: 300px;
-            }
-
-            .btn {
-                flex: 1;
-                padding: 15px 30px;
-                border-radius: 12px;
-                font-weight: 600;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                border: 2px solid white;
-            }
-
-            .btn-primary {
-                background: white;
-                color: #667eea;
-            }
-
-            .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 25px rgba(255,255,255,0.3);
-            }
-
-            .btn-secondary {
-                background: transparent;
-                color: white;
-            }
-
-            .btn-secondary:hover {
-                background: white;
-                color: #667eea;
+                min-height: 400px;
+                border-radius: 20px;
             }
 
             .stats {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 30px;
-                margin-top: 50px;
-                padding-top: 50px;
-                border-top: 1px solid #e2e8f0;
+                gap: 1.5rem;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .left-section h1 {
+                font-size: 2.25rem;
             }
 
-            .stat-item {
-                text-align: center;
+            .auth-buttons {
+                flex-direction: column;
             }
 
-            .stat-number {
-                font-size: 2.5rem;
-                font-weight: 700;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
+            .btn {
+                width: 100%;
             }
 
-            .stat-label {
-                color: #718096;
-                font-size: 0.9rem;
-                margin-top: 5px;
+            .stats {
+                flex-direction: column;
+                align-items: flex-start;
             }
 
-            @media (max-width: 968px) {
-                .main-card {
-                    grid-template-columns: 1fr;
-                }
-
-                .header h1 {
-                    font-size: 2rem;
-                }
-
-                .left-section, .right-section {
-                    padding: 40px;
-                }
-
-                .stats {
-                    grid-template-columns: 1fr;
-                    gap: 20px;
-                }
+            .glass-tag {
+                display: none;
+                /* Hide on mobile to save space */
             }
 
-            @media (max-width: 640px) {
-                .header h1 {
-                    font-size: 1.8rem;
-                }
-
-                .left-section h2 {
-                    font-size: 1.5rem;
-                }
-
-                .auth-buttons {
-                    flex-direction: column;
-                }
-
-                .left-section, .right-section {
-                    padding: 30px;
-                }
+            .book-illustration {
+                width: 240px;
+                height: 240px;
             }
+        }
+    </style>
+</head>
 
-            /* Animation */
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+<body>
 
-            .main-card {
-                animation: fadeInUp 0.6s ease-out;
-            }
+    <div class="header-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path
+                d="M11.25 4.533A9.707 9.707 0 006 3a9.735 9.735 0 00-3.25.555.75.75 0 00-.5.707v14.25a.75.75 0 001 .707A8.237 8.237 0 016 18.75c1.995 0 3.823.707 5.25 1.886V4.533zM12.75 20.636A8.214 8.214 0 0118 18.75c1.68 0 3.282.515 4.75 1.407A.75.75 0 0024 19.5V5.262a.75.75 0 00-.5-.707A9.735 9.735 0 0018 3a9.707 9.707 0 00-5.25 1.533v16.103z" />
+        </svg>
+        <span>BookHub Sekolah</span>
+    </div>
 
-            .feature-item {
-                animation: fadeInUp 0.6s ease-out;
-                animation-fill-mode: both;
-            }
+    <div class="main-card">
 
-            .feature-item:nth-child(1) { animation-delay: 0.1s; }
-            .feature-item:nth-child(2) { animation-delay: 0.2s; }
-            .feature-item:nth-child(3) { animation-delay: 0.3s; }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <div class="header">
-                <h1>📚 BookHub Sekolah</h1>
-                <p>Sistem Peminjaman Buku Sekolah Modern & Efisien</p>
-            </div>
+        <div class="left-section">
+            <div class="badge">Perpustakaan Digital</div>
+            <h1>Kelola Peminjaman Buku dengan Mudah</h1>
+            <p class="subtitle">Sistem manajemen perpustakaan modern yang memudahkan siswa dan guru dalam meminjam buku
+                secara digital tanpa ribet.</p>
 
-            <div class="main-card">
-                <div class="left-section">
-                    <h2>Kelola Peminjaman Buku dengan Mudah</h2>
-                    <p>Sistem manajemen perpustakaan yang memudahkan siswa dan guru dalam meminjam buku secara digital.</p>
+            <!-- Auth Buttons Pindah ke Kiri (Sesuai Konvensi UI/UX Modern) -->
+            @if (Route::has('login'))
+                <div class="auth-buttons">
+                    @auth
+                        <a href="{{ url('/redirect-dashboard') }}" class="btn btn-primary">
+                            Akses Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" class="btn btn-secondary">
+                            Masuk Akun
+                        </a>
+                        @if (Route::has('register'))
+                            <a href="{{ route('register') }}" class="btn btn-primary">
+                                Daftar Sekarang
+                            </a>
+                        @endif
+                    @endauth
+                </div>
+            @endif
 
-                    <div class="features">
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                </svg>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Katalog Lengkap</h3>
-                                <p>Ribuan koleksi buku tersedia untuk dipinjam</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                                </svg>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Peminjaman Cepat</h3>
-                                <p>Proses peminjaman hanya dalam hitungan detik</p>
-                            </div>
-                        </div>
-
-                        <div class="feature-item">
-                            <div class="feature-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
-                            </div>
-                            <div class="feature-content">
-                                <h3>Pengingat Otomatis</h3>
-                                <p>Notifikasi pengembalian buku tepat waktu</p>
-                            </div>
-                        </div>
+            <div class="features">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
                     </div>
-
-                    <div class="stats">
-                        <div class="stat-item">
-                            <div class="stat-number">5000+</div>
-                            <div class="stat-label">Koleksi Buku</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">1200+</div>
-                            <div class="stat-label">Pengguna Aktif</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-number">98%</div>
-                            <div class="stat-label">Kepuasan</div>
-                        </div>
+                    <div class="feature-content">
+                        <h3>Katalog Lengkap</h3>
+                        <p>Ribuan koleksi buku tersedia untuk dipinjam secara real-time.</p>
                     </div>
                 </div>
 
-                <div class="right-section">
-                    <div class="book-illustration">
-                        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                            <!-- Book Stack -->
-                            <rect x="40" y="120" width="120" height="15" fill="#ffffff" opacity="0.9" rx="2"/>
-                            <rect x="45" y="100" width="110" height="15" fill="#ffffff" opacity="0.8" rx="2"/>
-                            <rect x="50" y="80" width="100" height="15" fill="#ffffff" opacity="0.7" rx="2"/>
-                            
-                            <!-- Main Book -->
-                            <rect x="60" y="40" width="80" height="100" fill="#ffffff" rx="3"/>
-                            <rect x="65" y="45" width="70" height="90" fill="#f7fafc" rx="2"/>
-                            
-                            <!-- Book Details -->
-                            <line x1="75" y1="60" x2="125" y2="60" stroke="#667eea" stroke-width="2"/>
-                            <line x1="75" y1="70" x2="120" y2="70" stroke="#cbd5e0" stroke-width="1.5"/>
-                            <line x1="75" y1="78" x2="120" y2="78" stroke="#cbd5e0" stroke-width="1.5"/>
-                            <line x1="75" y1="86" x2="115" y2="86" stroke="#cbd5e0" stroke-width="1.5"/>
-                            
-                            <!-- Bookmark -->
-                            <rect x="100" y="40" width="8" height="30" fill="#764ba2"/>
-                            <polygon points="104,70 100,65 108,65" fill="#764ba2"/>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
                         </svg>
                     </div>
+                    <div class="feature-content">
+                        <h3>Peminjaman Cepat</h3>
+                        <p>Proses peminjaman dan pengembalian hanya dalam hitungan detik.</p>
+                    </div>
+                </div>
 
-                    @if (Route::has('login'))
-                        <div class="auth-buttons">
-                            @auth
-                                <a href="{{ url('/redirect-dashboard') }}" class="btn btn-primary">
-                                    Dashboard
-                                </a>
-                            @else
-                                <a href="{{ route('login') }}" class="btn btn-secondary">
-                                    Masuk
-                                </a>
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}" class="btn btn-primary">
-                                        Daftar
-                                    </a>
-                                @endif
-                            @endauth
-                        </div>
-                    @endif
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="feature-content">
+                        <h3>Pengingat Otomatis</h3>
+                        <p>Notifikasi pintar agar tidak telat dalam mengembalikan buku.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">5000+</div>
+                    <div class="stat-label">Koleksi Buku</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1200+</div>
+                    <div class="stat-label">Pengguna Aktif</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Kepuasan</div>
                 </div>
             </div>
         </div>
-    </body>
+
+        <div class="right-section">
+            <!-- Floating Glass Elements -->
+            <div class="glass-tag tag-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                Mudah Digunakan
+            </div>
+            <div class="glass-tag tag-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                    stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Akses 24/7
+            </div>
+
+            <!-- Modern Flat-3D SVG Book Illustration -->
+            <div class="book-illustration">
+                <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="coverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ffffff" />
+                            <stop offset="100%" stop-color="#f8fafc" />
+                        </linearGradient>
+                        <linearGradient id="spineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#e0e7ff" />
+                            <stop offset="100%" stop-color="#c7d2fe" />
+                        </linearGradient>
+                        <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feDropShadow dx="0" dy="15" stdDeviation="15" flood-color="#000000" flood-opacity="0.15" />
+                        </filter>
+                    </defs>
+
+                    <!-- Book Stack Shadows / Pages -->
+                    <path
+                        d="M40,150 L200,150 A10,10 0 0,1 210,160 L210,165 A10,10 0 0,1 200,175 L40,175 A10,10 0 0,1 30,165 L30,160 A10,10 0 0,1 40,150 Z"
+                        fill="#ffffff" opacity="0.3" />
+                    <path
+                        d="M45,130 L195,130 A10,10 0 0,1 205,140 L205,145 A10,10 0 0,1 195,155 L45,155 A10,10 0 0,1 35,145 L35,140 A10,10 0 0,1 45,130 Z"
+                        fill="#ffffff" opacity="0.6" />
+
+                    <!-- Main Book -->
+                    <rect x="50" y="40" width="140" height="110" rx="8" fill="url(#coverGrad)" filter="url(#shadow)" />
+                    <rect x="50" y="40" width="15" height="110" rx="0" fill="url(#spineGrad)" />
+
+                    <!-- Bookmark -->
+                    <path d="M140,40 L160,40 L160,95 L150,85 L140,95 Z" fill="#f43f5e" />
+
+                    <!-- Cover Content (Lines) -->
+                    <rect x="85" y="65" width="80" height="6" rx="3" fill="#cbd5e1" />
+                    <rect x="85" y="85" width="55" height="6" rx="3" fill="#cbd5e1" />
+                    <rect x="85" y="105" width="70" height="6" rx="3" fill="#cbd5e1" />
+                    <rect x="85" y="125" width="40" height="6" rx="3" fill="#cbd5e1" />
+
+                    <!-- Abstract Floating Decor -->
+                    <circle cx="20" cy="50" r="4" fill="#ffffff" opacity="0.6" />
+                    <circle cx="220" cy="80" r="6" fill="#ffffff" opacity="0.5" />
+                    <rect x="190" y="30" width="10" height="10" rx="2" fill="#ffffff" opacity="0.6"
+                        transform="rotate(45 190 30)" />
+                    <circle cx="40" cy="200" r="8" fill="#ffffff" opacity="0.4" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+</body>
+
 </html>

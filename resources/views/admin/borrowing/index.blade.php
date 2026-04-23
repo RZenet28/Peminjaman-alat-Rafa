@@ -68,20 +68,6 @@
             </div>
         </div>
 
-        <!-- Success Alert -->
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-circle me-2"></i>{{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
 
         <!-- Search & Filter -->
         <div class="card border-0 shadow-sm mb-4">
@@ -153,15 +139,14 @@
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-sm btn-success"
-                                                onclick="return confirm('Setujui peminjaman ini?')"><i
-                                                    class="bi bi-check"></i></button>
+                                                data-confirm="Setujui peminjaman ini?"><i class="bi bi-check"></i></button>
                                         </form>
                                         <form action="{{ route('admin.borrowing.reject', $borrowing->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-sm btn-danger"
-                                                onclick="return confirm('Tolak peminjaman ini?')"><i class="bi bi-x"></i></button>
+                                                data-confirm="Tolak peminjaman ini?"><i class="bi bi-x"></i></button>
                                         </form>
                                     @endif
                                 </td>

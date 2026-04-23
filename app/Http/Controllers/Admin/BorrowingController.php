@@ -29,7 +29,7 @@ class BorrowingController extends Controller
                 $q->whereHas('user', function ($u) use ($request) {
                     $u->where('name', 'like', '%' . $request->search . '%');
                 })->orWhereHas('buku', function ($b) use ($request) {
-                    $b->where('nama_buku', 'like', '%' . $request->search . '%');
+                    $b->where('nama_buku', 'like', '%' .  $request->search . '%');
                 });
             });
         }
@@ -103,5 +103,38 @@ class BorrowingController extends Controller
         }
 
         return back()->with('success', 'Peminjaman berhasil dibuat!');
+    }
+
+    /**
+     * Display approval list (pending borrowings only)
+     */
+    public function approvalList(Request $request)
+    {
+        $query = Peminjaman::with(['user', 'buku'])
+            ->where('status', 'pending');
+
+        // Search
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->whereHas('user', function ($u) use ($request) {
+                    $u->where('name', 'like', '%' . $request->search . '%');
+                })->orWhereHas('buku', function ($b) use ($request) {
+                    $b->where('nama_buku', 'like', '%' . $request->search . '%');
+                });
+            });
+        }
+
+        $pendingBorrowings = $query->latest()->paginate(15)->withQueryString();
+
+        $stats = [
+            'pending' => Peminjaman::where('status', 'pending')->count(),
+            'dipinjam' => Peminjaman::where('status', 'dipinjam')->count(),
+            'dikembalikan' => Peminjaman::where('status', 'dikembalikan')->count(),
+            'ditolak' => Peminjaman::where('status', 'ditolak')->count(),
+        ];
+
+        $pendingCount = $stats['pending'];
+
+        return view('admin.borrowing.approval', compact('pendingBorrowings', 'stats', 'pendingCount'));
     }
 }

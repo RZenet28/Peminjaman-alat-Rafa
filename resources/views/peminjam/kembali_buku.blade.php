@@ -275,12 +275,6 @@
             <p>Kelola pengembalian buku yang telah Anda pinjam</p>
         </div>
 
-        @if (session('success'))
-            <div class="alert-info" style="background-color: #d4edda; border-left-color: #28a745; color: #155724;">
-                ✓ {{ session('success') }}
-            </div>
-        @endif
-
         @if ($loans->count() > 0)
             <div class="loans-grid">
                 @foreach ($loans as $loan)

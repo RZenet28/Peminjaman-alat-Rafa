@@ -377,18 +377,6 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        @if (session('error'))
-            <div class="alert alert-error">
-                {{ session('error') }}
-            </div>
-        @endif
-
         @if ($cart->items()->count() === 0)
             <div class="empty-cart">
                 <div class="empty-cart-icon">📚</div>
@@ -475,7 +463,7 @@
                     <form action="{{ route('peminjam.cart.clear') }}" method="POST" style="display: inline;">
                         @csrf
                         <button type="submit" class="btn-clear-cart"
-                            onclick="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?')">
+                            data-confirm="Apakah Anda yakin ingin mengosongkan keranjang?">
                             🗑 Kosongkan Keranjang
                         </button>
                     </form>
@@ -508,7 +496,7 @@
                     currentQty++;
                     updateQuantity(bookId, currentQty);
                 } else {
-                    alert('Stok tidak cukup! Maksimal: ' + maxStock);
+                    showAlert('Stok Tidak Cukup', 'Maksimal stok yang bisa dipinjam: ' + maxStock, 'warning');
                 }
             });
         });
@@ -524,7 +512,7 @@
                     currentQty--;
                     updateQuantity(bookId, currentQty);
                 } else {
-                    alert('Minimal 1 buku harus ada dalam keranjang. Gunakan tombol Hapus untuk menghapus item.');
+                    showAlert('Minimal Item', 'Minimal 1 buku harus ada dalam keranjang. Gunakan tombol Hapus untuk menghapus item.', 'info');
                 }
             });
         });
@@ -556,12 +544,12 @@
                             totalBooksCount.textContent = data.totalQuantity;
                         }
                     } else {
-                        alert(data.message || 'Gagal memperbarui keranjang');
+                        showAlert('Gagal', data.message || 'Gagal memperbarui keranjang', 'error');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Terjadi kesalahan saat memperbarui keranjang');
+                    showAlert('Error', 'Terjadi kesalahan saat memperbarui keranjang', 'error');
                 });
         }
     </script>

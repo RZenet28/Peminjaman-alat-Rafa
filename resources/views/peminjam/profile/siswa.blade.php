@@ -117,13 +117,6 @@
             </span>
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success alert-modern shadow-sm mb-4 d-flex align-items-center">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                {{ session('success') }}
-            </div>
-        @endif
-
         <div class="card card-modern">
             <div class="card-header-gradient">
                 <div class="rounded-circle bg-white bg-opacity-25 d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">

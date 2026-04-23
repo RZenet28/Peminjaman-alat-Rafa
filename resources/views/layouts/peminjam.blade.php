@@ -10,6 +10,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css">
+
     <style>
         * {
             margin: 0;
@@ -368,13 +371,13 @@
                 </a>
             </li>
 
-            <li class="sidebar-menu-item">
+            {{-- <li class="sidebar-menu-item">
                 <a href="/peminjam/ajukan-peminjaman"
                     class="sidebar-menu-link {{ request()->is('peminjam/ajukan-peminjaman') ? 'active' : '' }}">
                     <i class="bi bi-plus-circle sidebar-menu-icon"></i>
                     Ajukan Peminjaman
                 </a>
-            </li>
+            </li> --}}
 
             <li class="sidebar-menu-item">
                 <a href="/peminjam/kembalikan-buku"
@@ -457,7 +460,48 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+
     <!-- Custom JS -->
+    <script>
+        // Show SweetAlert notification if session has message
+        @if(session('success'))
+            Swal.fire({
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonColor: '#667eea',
+                confirmButtonText: 'OK',
+                timer: 3000,
+                timerProgressBar: true
+            });
+        @elseif(session('error'))
+            Swal.fire({
+                title: 'Error!',
+                text: '{{ session('error') }}',
+                icon: 'error',
+                confirmButtonColor: '#dc2626',
+                confirmButtonText: 'OK'
+            });
+        @elseif(session('warning'))
+            Swal.fire({
+                title: 'Peringatan!',
+                text: '{{ session('warning') }}',
+                icon: 'warning',
+                confirmButtonColor: '#f59e0b',
+                confirmButtonText: 'OK'
+            });
+        @elseif(session('info'))
+            Swal.fire({
+                title: 'Informasi',
+                text: '{{ session('info') }}',
+                icon: 'info',
+                confirmButtonColor: '#3b82f6',
+                confirmButtonText: 'OK'
+            });
+        @endif
+    </script>
     <script>
         // Mobile Menu Toggle
         const menuToggle = document.getElementById('menuToggle');
@@ -493,6 +537,88 @@
 
         // Load cart count on page load
         document.addEventListener('DOMContentLoaded', updateCartBadge);
+
+        // ========== SweetAlert2 Confirm Dialog Helpers ==========
+
+        // Function untuk confirm dialog dengan form submit
+        function confirmSubmit(message, form) {
+            Swal.fire({
+                title: 'Konfirmasi',
+                text: message,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#667eea',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, lanjutkan!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
+        }
+
+        // Function untuk simple alert
+        function showAlert(title, message, icon = 'info') {
+            Swal.fire({
+                title: title,
+                text: message,
+                icon: icon,
+                confirmButtonColor: '#667eea',
+                confirmButtonText: 'OK'
+            });
+        }
+
+        // Attach confirm to all forms with data-confirm attribute
+        document.querySelectorAll('form[data-confirm]').forEach(form => {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const message = this.getAttribute('data-confirm');
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#667eea',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+
+        // Attach confirm to all buttons with data-confirm attribute
+        document.querySelectorAll('button[data-confirm], a[data-confirm]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const message = this.getAttribute('data-confirm');
+                const form = this.closest('form');
+
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#667eea',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: 'Ya, lanjutkan!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        if (form) {
+                            form.submit();
+                        } else if (this.href) {
+                            window.location.href = this.href;
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
     @stack('scripts')

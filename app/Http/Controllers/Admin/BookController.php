@@ -42,7 +42,10 @@ class BookController extends Controller
             'category_id' => 'required',
             'denda_hilang' => 'required|numeric|min:0',
             'denda_rusak' => 'required|numeric|min:0',
-            'gambar' => 'nullable|image|max:2048'
+            'gambar' => 'nullable|image|max:2048',
+            'pengarang' => 'nullable|string',
+            'penerbit' => 'nullable|string',
+            'tahun' => 'nullable|integer'
         ]);
 
         $gambarPath = null;
@@ -58,7 +61,10 @@ class BookController extends Controller
             'category_id' => $request->category_id,
             'denda_hilang' => $request->denda_hilang,
             'denda_rusak' => $request->denda_rusak,
-            'gambar' => $gambarPath
+            'gambar' => $gambarPath,
+            'pengarang' => $request->pengarang,
+            'penerbit' => $request->penerbit,
+            'tahun' => $request->tahun
         ]);
 
         return back()->with('success', 'Buku berhasil ditambahkan');
@@ -75,7 +81,10 @@ class BookController extends Controller
             'category_id' => 'required',
             'denda_hilang' => 'required|numeric|min:0',
             'denda_rusak' => 'required|numeric|min:0',
-            'gambar' => 'nullable|image|max:2048'
+            'gambar' => 'nullable|image|max:2048',
+            'pengarang' => 'nullable|string',
+            'penerbit' => 'nullable|string',
+            'tahun' => 'nullable|integer'
         ]);
 
         $gambarPath = $book->gambar;
@@ -98,7 +107,10 @@ class BookController extends Controller
             'category_id' => $request->category_id,
             'denda_hilang' => $request->denda_hilang,
             'denda_rusak' => $request->denda_rusak,
-            'gambar' => $gambarPath
+            'gambar' => $gambarPath,
+            'pengarang' => $request->pengarang,
+            'penerbit' => $request->penerbit,
+            'tahun' => $request->tahun
         ]);
 
         return back()->with('success', 'Buku berhasil diupdate');

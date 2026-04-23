@@ -262,12 +262,6 @@
             <p>Kelola dan setujui permohonan peminjaman dari peminjam (dikelompokkan per pengajuan)</p>
         </div>
 
-        @if (session('success'))
-            <div class="alert-success">
-                ✓ {{ session('success') }}
-            </div>
-        @endif
-
         @if ($requests->count() > 0)
             <div class="request-cards">
                 @foreach ($requests as $request)
@@ -323,13 +317,13 @@
                             <form action="{{ route('petugas.approve', $request->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn-approve"
-                                    onclick="return confirm('Setujui permohonan peminjaman ini? Stock buku akan berkurang.')">✓
+                                    data-confirm="Setujui permohonan peminjaman ini? Stock buku akan berkurang.">✓
                                     Setujui Semua</button>
                             </form>
                             <form action="{{ route('petugas.reject', $request->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn-reject"
-                                    onclick="return confirm('Apakah Anda yakin ingin menolak permohonan ini?')">✗ Tolak
+                                    data-confirm="Apakah Anda yakin ingin menolak permohonan ini?">✗ Tolak
                                     Semua</button>
                             </form>
                         </div>
